@@ -1,74 +1,191 @@
-# Top-10-Tracker
-Tracks the performance of our Top 10 Basket of stocks across multiple trading strategies, namely Market Orders, Fair Value Orders, Beta Adjusted Orders, and ATR Adjusted Orders
+# Top-10 Tracker
 
-Our goal is to track our top 10 longs and top 10 shorts stock picks. We want to see the total performance of our basket of stocks in aggregate (longs and shorts). It also shows us the performance of each basket (longs baskets and shorts baskets separately). Included is a capital allocation cell which allows us to adjust how much money we are allocating per trading symbol in our calculation. The different strategies for tracking our baskets are as follows: 
+The **Top-10 Tracker** is a comprehensive tool designed to evaluate and compare the performance of a "Top 10" portfolio of stocks using multiple trading strategies, including Market Orders, Fair Value Orders, Beta Adjusted Orders, and ATR Adjusted Orders. By tracking both long and short positions across various allocation strategies, the tool offers insights into the portfolio’s total and individual basket performance.
 
-Market Orders. This strategy is the simplest. It involves all market orders at the opening price for the current trading day for all our longs and our shorts. Capital is even and based solely on how much we set to allocate.
+[Access the Google Sheet here](https://docs.google.com/spreadsheets/d/1Q2TxpCMEJM3xRL62TuPfSDHrdnqo6-lJw3gpthWFM4E/edit?usp=sharing)
 
-Beta Adjusted: this strategy enters via market orders, but the amount of capital allocated per symbol is based on the stock's current beta. Beta is a measure of volatility relative to the market.
+## Objectives
 
-ATR Adjusted: This strategy is the same as beta, but it uses ATR (Average True Range) to measure volatility rather than beta. 
+The primary goal of the Top-10 Tracker is to monitor and analyze the performance of selected stocks in both long and short baskets. The tool:
+- Calculates the overall return on the combined long and short baskets.
+- Tracks the individual performance of the long and short baskets separately.
+- Enables dynamic allocation adjustments for each trading symbol, facilitating tailored performance insights.
 
-Fair Value (FV) OPG Limit Orders: This strategy uses limit OPG orders to enter into each trade. In this strategy, not every order gets filled, depending on the opening price of the stock. The price of our limit orders is based on a calculation related to the price of the SP500 index (SPY ETF) shortly before market open (9:15am EST). 
+## Strategy Breakdown
 
-FV OPG Limit + Beta: The same as FV OPG Limit Orders, but it allocates capital based on the stock's beta just as in our beta adjusted sheet.
+The Top-10 Tracker supports multiple trading strategies to meet diverse investment objectives and market conditions. Each strategy allocates capital based on specific criteria, allowing for a comparison of results across different market environments:
 
-Let us take a more detailed look at our Sheets to see how these symbols are determined, and how they make their way into our tracking sheet.
+1. **Market Orders**
+   - **Description**: A straightforward approach involving market orders at the opening price for all stocks in the portfolio.
+   - **Allocation**: Evenly distributes capital across all symbols based on the amount set in the capital allocation cell.
 
-The first step can be found in the sheet tab titled 'Copy/Paste' Here is a screenshot of what this sheet looks like:
+2. **Beta Adjusted**
+   - **Description**: This strategy allocates capital according to each stock's beta, a measure of its volatility relative to the broader market.
+   - **Benefit**: Beta-adjusted capital allocation increases exposure to stocks with a higher market correlation while reducing exposure to stocks with lower correlation, balancing portfolio risk based on volatility.
 
-![Screenshot 2024-11-07 103411](https://github.com/user-attachments/assets/7a069e36-c82b-4573-b72f-a642cc50810e)
+3. **ATR Adjusted**
+   - **Description**: Similar to the Beta Adjusted strategy, this approach allocates capital based on the stock's Average True Range (ATR), a volatility measure that considers both historical highs and lows.
+   - **Benefit**: ATR-based allocation allows for capital adjustments based on each stock's price volatility, potentially improving stability in uncertain market conditions.
 
-In this sheet we have column A which contains our 10 stock symbols long (in green) and 10 stock symbols short (in red). Column B and C contain the company and sector respectively. Column H contains the stock's beta and Column I contain the stocks ATR. Within this sheet in columns K:O, there is an automatic calculation that is done to determine the capital allocation for our ATR adjusted strategy. The last closing price of the stock is listed in column K via our google finance formula =googlefinance(A2,"closeyest"). In Column L, the ATR expressed as a percentage of the price is then calculated by taking the ATR in column I and dividing by the price in column K. In column M, we calculate the capital allocation using the ATR as a % of price. This is found by taking the maximum ATR as a percentage of price in column L, and setting the corresponding capital in that row to the value we set in cell O1. For the rest of the cells, their ATR adjusted capital is found by returning a proportion of the value in cell O1 scaled by the ratio of the maximum value in column L to the value in column L for that corresponding row. A sample row utilizing this formula is =if(L2=max(L$2:L),O$1,(max(L$2:L)*O$1)/L2). Using this formula, we can find our ATR adjusted capital and list these values in column M. (Note in row 22, we are finding the ATR adj Capital for SPY based on the ATR of SPY listed in cell J23. 
+4. **Fair Value (FV) OPG Limit Orders**
+   - **Description**: Uses limit OPG (Opening Only) orders to set entry prices, with a focus on value relative to the SP500 index (SPY ETF) before market open (around 9:15 AM EST).
+   - **Allocation**: Limit orders are placed based on expected opening prices and may not be filled if prices don’t match set thresholds, allowing selective participation based on pre-market signals.
 
-Now that our data is inputted in or 'Copy/Paste' Sheet tab, this data is retrieved by our other sheets to effectively track the performance of our stocks. Let us start with our Market Orders OC sheets tab. Here is an image demonstrating this sheet:
-
-![Screenshot 2024-11-07 114652](https://github.com/user-attachments/assets/782952bb-f070-47ac-8bfa-77d991bc7016)
-
-
-This sheet contains a method of placement as mentioned earlier that provides the simplest form of order entry: Market Orders. This strategy dictates that you are to simply buy a stock long or sell a stock short at the open, no matter the opening price of the stock. An walkthrough of this sheet will also be beneficial to our foundational knowledge to the rest of the sheets, since many characteristics are found between this sheet and the other sheet tabs in our Google Sheet. 
-
-Focusing on our performance tracking section in the top left of the sheet, we see key performance metrics for our observation. In cell B3 and C3 we have our Return on Capital (ROC) and Profil & Loss (PL). In cells B5 and C5 we have our ROC and PL for our longs, and in B6 and C6 our ROC and PL for shorts. In E3 we have our total capital deployed, and in F3 we have the number of symbols deployed. We also have our capital and # of symbols break down by longs and shorts in E5:E6 and F5:F6. Not that in Row 7 we have metrics for our hedge, which is currently empty. However if we find ourselves net long or net short, we can opt to add a hedge (such as the SPY) and its performance metrics can be found here.
-
-Cell I2 contains our value for how much capital we are allocating per symbol.
-
-In Rows 10:21 we have detailed tracking of our individual symbols. Contained within these rows, Column C contains our stock symbols we are trading long. These symbols are retriever from our 'Copy/Paste' tabs via our formula ={"Symbols";'Copy/Paste'!A2:A11}. Column D has the opening stock price (=GOOGLEFINANCE(C12,"priceopen" as our example for row 12). E hs the current stock price =GOOGLEFINANCE(C12,"price") as our example for row 12. F has the current difference between the current price and the open. G has the total capital allocated for the given symbol. H has the number of shares per symbol. I has the PL per symbol. J has the ROC per symbol. The same process and information is contained for our shorts in Columns N:U.
-
-Additional metrics for our longs can be found in G10, I10, and J10 (capital deployed, PL, ROC) and for our shorts in cells R10, T10, and U10. 
+5. **FV OPG Limit + Beta**
+   - **Description**: Combines the Fair Value OPG Limit Order approach with Beta Adjusted capital allocation.
+   - **Benefit**: This strategy merges selective entry based on fair value with beta-scaled capital allocation, integrating both price sensitivity and volatility-based weighting.
 
 
-In cell D26 we have the number of hedge units, calculated by taking the number of short symbols - long symbols. This tells us if we need to go long or short or hedge in order to balance our capital allocation. 
 
-In D25:L28 we have our hedge inputs. In E28 we have the symbol for our hedge, in this case SPY. F28 contains the opening price, G28 current price, H28 Difference, I28 Capital deployed, J28 shares bought or sold, K28 is our PL, and L28 is our ROC. 
 
-Our next sheet is our Beta Adjusted sheet: 
+## Sheet Breakdown
 
-![Screenshot 2024-11-07 121156](https://github.com/user-attachments/assets/aa01906e-9486-473a-8e28-1a1459f92ba7)
+Below is a detailed breakdown of each sheet in the Top-10 Tracker, explaining how symbols are chosen, the calculations involved, and how data is aggregated to evaluate each strategy’s performance.
 
-The key differences in this sheet can be found Columns G11:I21 for longs and T11:V21 for shorts. Within these columns are the Beta, Beta Adj. Capital, and Actual Capital. The beta is obtained from our 'Copy/Paste' Sheet via our formula ={"Beta";'Copy/Paste'!H2:H11}. Using our long side as an example, The beta adjusted capital is obtained by dividing our capital allocating in cell K2 by the stocks corrresponding Beta in column G via our formula ={"Beta Adj. Capital";arrayformula(if(isnumber(G12:G21),DIVIDE(K2,G12:G21),""))}. From here, we use our beta adjusted capital to calculate the number of shares we will be purchasing. by dividing the beta adjusted capital by the opening price. Our actual capital is then calculated by multiplying the number of shares by the opening price. 
+### Copy/Paste Sheet
 
-Our next sheet is ATR adjusted capital:
+The first step of the tracking process is in the **Copy/Paste** sheet, which contains essential data on our selected stocks. Here’s an example screenshot of this sheet:
 
-![Screenshot 2024-11-07 124534](https://github.com/user-attachments/assets/64c468a5-12c1-4c27-8dad-4ba54de2ee78)
+![Screenshot of Copy/Paste Sheet](https://github.com/user-attachments/assets/7a069e36-c82b-4573-b72f-a642cc50810e)
 
-The sheet is very similar to our beta sheet, however we use the ATR to measure the volatility of the individual symbol. The ATR Adjusted Capital can be found in column G for longs and column S for shorts. Using our longs as an example, the values for ATR Adjusted Capital are retrieved from our Copy/Paste tab with our formula ={"ATR Adj. Capital";'Copy/Paste'!M2:M11}. The actual capital is computed the same as in the Beta sheet.
+This sheet organizes information as follows:
+- **Column A**: Our top 10 long stock symbols are highlighted in green, and our top 10 short stock symbols are in red.
+- **Columns B and C**: Show each stock’s company name and sector.
+- **Column H**: Lists each stock's beta, providing a measure of market volatility.
+- **Column I**: Lists each stock’s Average True Range (ATR), another measure of volatility.
 
-Our next sheet is the FV OPG Limit Order Sheet:
+#### ATR Adjusted Capital Calculation
 
-![Screenshot 2024-11-07 132359](https://github.com/user-attachments/assets/ae57cb4f-2f54-4741-bb58-84eeaf5d70d9)
+In **Columns K through O**, automatic calculations are performed to determine the ATR-adjusted capital allocation for each stock:
+- **Column K**: Displays each stock’s last closing price using the formula `=googlefinance(A2,"closeyest")`.
+- **Column L**: Calculates the ATR as a percentage of the stock's price by dividing the ATR in **Column I** by the price in **Column K**.
+- **Column M**: Computes ATR-adjusted capital based on the percentage in Column L. The capital for the stock with the highest ATR-to-price percentage (found in Column L) is set to the value in cell **O1**. The formula `=if(L2=max(L$2:L),O$1,(max(L$2:L)*O$1)/L2)` scales other values proportionally to this maximum, giving each stock an adjusted capital allocation in **Column M**.
 
-This strategy is unique from the others covered thus far in that it uses OPG limit orders as opposed to market orders. With this type of order, we either have our trade filled at the limit price set or better, or the order gets canceled entirely. The limit price is dictated by our Fair Value calculation, which is calculated based on the percentage difference between the premarket price of the SPY and the previous close of the SPY. Columns I1:L3 contain the formula needed to make this calculation. We enter in the closing date in cell J3, and the current price of SPY as of 9:15am EST into cell K2. The percentage change is then calculated via our formula: 
-=(K2-index(googlefinance("SPY", "close",J3),2,2))/index(googlefinance("SPY", "close",J3),2,2)
+The ATR-adjusted capital for SPY, used as a benchmark, is based on its ATR in **cell J23** and is calculated in **Row 22**.
 
-This percentage difference is key to calculating the "expected open" which is the value found in columns D and Q for our longs and shorts respectively. Using our longs as an example, the formula for calculation is as follows:
+With all data loaded into the **Copy/Paste** sheet, subsequent sheets retrieve this information for performance tracking. Let’s explore the **Market Orders OC** sheet in more detail:
 
-=round(index(GOOGLEFINANCE(C12,"close",J$3),2,2)+$L$1*index(GOOGLEFINANCE(C12,"close",J$3),2,2),2)
+---
 
-In this formula, we are taking the closing price of our stock symbol in cell C12 and adjusting it based on the percentage value we calculated in cell L1. With this calculation applied to each of our stock symbols, we now have our Fair Value filled for our longs in column D. This Fair Value means that if the stock price of our longs opens at this price or lower, we should be interested in buying. Conversely, if the opening price for our short stocks is at the expected open price or higher, we should be interested in shorting. We use limit orders to enter in our prices at fair value. The open price determines if we get filled or not. For our longs, if the stock price opens at or below or fair value, we get filled at the opening price. For our shorts, if the stock opens at our above our fair value price, then we get filled at the opening price. 
+### Market Orders OC Sheet
 
-Whether we get filled or not can be seen in our "Difference" Columns, which is column G for our longs and column T for our shorts. If we are successfully filled, we will see the price difference calculation in the corresponding cell. However , if we do not get a fill, then we see a value of "NO FILL" within the cell. 
+The **Market Orders OC** sheet provides a straightforward approach to tracking market orders. Here’s a screenshot to illustrate the layout:
 
-For this sheet, we will most likely be getting an uneven amount of longs between our longs and shorts. For example, if the market is opening at a strong discount for a given morning, we would get filled on more longs than shorts in this scenario. For this reason, the HEDGE section of our sheet is more relevant in this FV OPG Limit Orders sheet than it has been in previous sheets. The user can choose to use SPY or any other vehicle to add to their long side or short side to balance out capital as needed. The hedging units is calculated as previously described, and performance will be displayed at the top of our sheet. 
+![Screenshot of Market Orders OC Sheet](https://github.com/user-attachments/assets/782952bb-f070-47ac-8bfa-77d991bc7016)
+
+This strategy enters trades at the open price for the current trading day, regardless of price movements. Key performance metrics are also included to track capital deployment, returns, and profit/loss.
+
+#### Key Sections in Market Orders OC Sheet
+
+- **Performance Summary (Top-Left)**
+  - **Cells B3 and C3**: Display the overall Return on Capital (ROC) and Profit & Loss (P&L) for the portfolio.
+  - **Cells B5 and C5**: ROC and P&L for long positions.
+  - **Cells B6 and C6**: ROC and P&L for short positions.
+  - **Cells E3 and F3**: Show the total capital deployed and the number of symbols traded.
+  - **Row 7**: Placeholder for hedge metrics, in case a hedge (e.g., SPY) is added to balance net long or short positions.
+
+- **Capital Allocation (Cell I2)**: Determines the capital allocated per symbol.
+
+- **Detailed Symbol Tracking (Rows 10–21)**
+  - **Column C**: Displays stock symbols for long positions, sourced from the **Copy/Paste** sheet via the formula `={"Symbols";'Copy/Paste'!A2:A11}`.
+  - **Columns D to J**: Track each long position’s opening price, current price, price change, capital allocation, shares, P&L, and ROC.
+  - **Columns N to U**: Contain the same information for short positions.
+
+Additional metrics for longs and shorts are found in **G10, I10, and J10** for longs and in **R10, T10, and U10** for shorts.
+
+#### Hedge Calculations
+
+In **Cell D26**, the tracker calculates hedge units by taking the difference between the number of short and long symbols. This value helps determine whether additional hedge positions, like SPY, are necessary to balance allocation.
+
+- **Hedge Data (D25:L28)**: Information on hedge positions is organized here.
+  - **E28**: Symbol for the hedge (e.g., SPY).
+  - **Columns F to L**: Track the hedge’s opening price, current price, price change, capital, shares, P&L, and ROC.
+
+
+## Beta Adjusted Sheet
+
+The **Beta Adjusted** sheet adjusts capital based on each stock’s beta. Below is a screenshot of this sheet:
+
+![Screenshot of Beta Adjusted Sheet](https://github.com/user-attachments/assets/aa01906e-9486-473a-8e28-1a1459f92ba7)
+
+### Key Differences in Columns
+
+The beta adjustment data is located in:
+- **Columns G11:I21** for longs
+- **Columns T11:V21** for shorts
+
+#### Columns Overview:
+- **Beta**: Retrieved from the **Copy/Paste** sheet using the formula `={"Beta";'Copy/Paste'!H2:H11}`.
+- **Beta Adjusted Capital**: For longs, this is calculated by dividing the allocated capital (cell **K2**) by the beta in **Column G**. Formula: `={"Beta Adj. Capital";arrayformula(if(isnumber(G12:G21),DIVIDE(K2,G12:G21),""))}`.
+- **Actual Capital**: Calculated by multiplying the number of shares (based on beta-adjusted capital and opening price) by the opening price.
+
+---
+
+## ATR Adjusted Capital Sheet
+
+The **ATR Adjusted** sheet uses ATR to adjust capital based on each stock's volatility. Here’s an example screenshot:
+
+![Screenshot of ATR Adjusted Capital Sheet](https://github.com/user-attachments/assets/64c468a5-12c1-4c27-8dad-4ba54de2ee78)
+
+This sheet is similar to the Beta sheet, but it uses **ATR** as the volatility measure:
+- **ATR Adjusted Capital** is in **Column G** for longs and **Column S** for shorts.
+- ATR data is retrieved from the **Copy/Paste** sheet using the formula `={"ATR Adj. Capital";'Copy/Paste'!M2:M11}`.
+
+**Actual Capital** is calculated in the same way as in the Beta Adjusted sheet.
+
+---
+
+## FV OPG Limit Order Sheet
+
+The **FV OPG Limit Order** sheet uses OPG limit orders based on a Fair Value (FV) calculation. Here’s a screenshot:
+
+![Screenshot of FV OPG Limit Order Sheet](https://github.com/user-attachments/assets/ae57cb4f-2f54-4741-bb58-84eeaf5d70d9)
+
+This strategy differs from the previous ones as it uses **OPG limit orders**. If an order fills at the limit price (or better), it executes; otherwise, it is canceled. The limit price is determined by the **Fair Value calculation** based on the SPY’s premarket percentage difference from its previous close.
+
+#### Key Calculations
+- **Fair Value Calculation**: Found in **Cells I1:L3**.
+  - **Close Date**: Entered in **Cell J3**.
+  - **SPY Premarket Price**: Entered in **Cell K2**.
+  - **Percentage Difference**: `=(K2-index(googlefinance("SPY", "close",J3),2,2))/index(googlefinance("SPY", "close",J3),2,2)`
+
+- **Expected Open** (Longs in **Column D** and Shorts in **Column Q**): This uses the formula `=round(index(GOOGLEFINANCE(C12,"close",J$3),2,2)+$L$1*index(GOOGLEFINANCE(C12,"close",J$3),2,2),2)`, adjusting the prior close based on the calculated percentage in **Cell L1**.
+
+#### Order Execution
+- **Longs**: Buy if the stock price opens at or below the Fair Value.
+- **Shorts**: Short if the stock price opens at or above the Fair Value.
+
+Fill status is shown in the **Difference** columns:
+- **Column G** for longs
+- **Column T** for shorts
+
+If filled, the price difference appears in the cell; if not, it displays "NO FILL".
+
+**Hedge Calculations** are more relevant here due to potential uneven fills between longs and shorts.
+
+---
+
+## FV OPG Limit + Beta Adjusted Sheet
+
+This sheet combines the FV OPG Limit Order strategy with **Beta Adjusted Capital Allocation**. Here’s a screenshot:
+
+![Screenshot of FV OPG Limit + Beta Adjusted Sheet](https://github.com/user-attachments/assets/5d3fc8a3-01e0-4947-8fa9-3971af334a9f)
+
+In this strategy, limit orders use the **Fair Value calculation** but capital allocation is based on each stock's beta, as in the **Beta Adjusted** sheet.
+
+---
+
+## Results Tab
+
+The **Results** tab provides an end-of-day breakdown of the performance for each strategy, showing totals as well as the individual performance of longs, shorts, and the hedge. Here’s a screenshot:
+
+![Screenshot of Results Tab](https://github.com/user-attachments/assets/909cfc79-b653-435e-ada4-945d218cd617)
+
+---
+
+This Google Sheet is designed to provide a comprehensive comparison of five trading strategies. This kind of comparative tracking is crucial for traders to refine their decision-making and optimize strategy selection. By automating the tracking process, this tool becomes a powerful asset for improving a trader’s strategy development and evaluation.
+
+
 
 
 
