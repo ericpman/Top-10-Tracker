@@ -104,7 +104,7 @@ In **Cell D26**, the tracker calculates hedge units by taking the difference bet
 
 ## Beta Adjusted Sheet
 
-The **Beta Adjusted** sheet adjusts capital based on each stock’s beta. Below is a screenshot of this sheet:
+The **Beta Adjusted** sheet adjusts capital based on each stock’s beta.
 
 ![Screenshot of Beta Adjusted Sheet](https://github.com/user-attachments/assets/aa01906e-9486-473a-8e28-1a1459f92ba7)
 
@@ -123,7 +123,7 @@ The beta adjustment data is located in:
 
 ## ATR Adjusted Capital Sheet
 
-The **ATR Adjusted** sheet uses ATR to adjust capital based on each stock's volatility. Here’s an example screenshot:
+The **ATR Adjusted** sheet uses ATR to adjust capital based on each stock's volatility.
 
 ![Screenshot of ATR Adjusted Capital Sheet](https://github.com/user-attachments/assets/64c468a5-12c1-4c27-8dad-4ba54de2ee78)
 
@@ -137,7 +137,7 @@ This sheet is similar to the Beta sheet, but it uses **ATR** as the volatility m
 
 ## FV OPG Limit Order Sheet
 
-The **FV OPG Limit Order** sheet uses OPG limit orders based on a Fair Value (FV) calculation. Here’s a screenshot:
+The **FV OPG Limit Order** sheet uses OPG limit orders based on a Fair Value (FV) calculation.
 
 ![Screenshot of FV OPG Limit Order Sheet](https://github.com/user-attachments/assets/ae57cb4f-2f54-4741-bb58-84eeaf5d70d9)
 
@@ -167,7 +167,7 @@ If filled, the price difference appears in the cell; if not, it displays "NO FIL
 
 ## FV OPG Limit + Beta Adjusted Sheet
 
-This sheet combines the FV OPG Limit Order strategy with **Beta Adjusted Capital Allocation**. Here’s a screenshot:
+This sheet combines the FV OPG Limit Order strategy with **Beta Adjusted Capital Allocation**.
 
 ![Screenshot of FV OPG Limit + Beta Adjusted Sheet](https://github.com/user-attachments/assets/5d3fc8a3-01e0-4947-8fa9-3971af334a9f)
 
